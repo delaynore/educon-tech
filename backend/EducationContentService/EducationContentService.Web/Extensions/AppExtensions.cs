@@ -1,3 +1,4 @@
+using EducationContentService.Web.Middlewares;
 using Serilog;
 
 namespace EducationContentService.Web.Extensions;
@@ -6,6 +7,7 @@ public static class AppExtensions
 {
     public static IApplicationBuilder Configure(this WebApplication app)
     {
+        app.UseRequestCorrelationIdMiddleware();
         app.UseSerilogRequestLogging();
 
         app.MapOpenApi();

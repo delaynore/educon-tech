@@ -30,6 +30,7 @@ public sealed class CreateHandler
 
     public Task Handle(CreateLessonRequest createLessonRequest)
     {
+        _logger.LogInformation("CreateLessonRequest: {Title}, {Description}", createLessonRequest.Title, createLessonRequest.Description);
         var lesson = new Lesson
         {
             Id = Guid.Parse(createLessonRequest.Title),
