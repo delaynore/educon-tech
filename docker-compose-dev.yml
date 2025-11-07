@@ -1,0 +1,24 @@
+services:
+  education-content-service:
+    container_name: education-content-service
+    build:
+      context: ./backend/EducationContentService
+      dockerfile: Dockerfile
+    ports:
+      - "9001:9001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=9001
+    restart: always
+    depends_on: 
+      - seq
+  seq:
+    container_name: seq
+    image: datalust/seq:latest
+    ports: 
+      - "8081:80"
+      - "5341:5341"
+    environment:
+      ACCEPT_EULA: "Y"
+      SEQ_FIRSTRUN_NOAUTHENTICATION: "true"
+    restart: always
