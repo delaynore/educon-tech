@@ -1,4 +1,5 @@
 using EducationContentService.Domain;
+using EducationContentService.Domain.Lessons;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -31,10 +32,6 @@ public sealed class CreateHandler
     public Task Handle(CreateLessonRequest createLessonRequest)
     {
         _logger.LogInformation("CreateLessonRequest: {Title}, {Description}", createLessonRequest.Title, createLessonRequest.Description);
-        var lesson = new Lesson
-        {
-            Id = Guid.Parse(createLessonRequest.Title),
-        };
 
         return Task.CompletedTask;
     }
