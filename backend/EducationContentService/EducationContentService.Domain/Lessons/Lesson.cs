@@ -4,20 +4,6 @@ namespace EducationContentService.Domain.Lessons;
 
 public sealed class Lesson
 {
-    public Guid Id { get; private set; }
-
-    public Title Title { get; private set; }
-
-    public Description Description { get; private set; }
-
-    public DateTime CreatedAtUtc { get; private set; }
-
-    public DateTime UpdatedAtUtc { get; private set; }
-
-    public bool IsDeleted { get; private set; }
-
-    public DateTime? DeletedAtUtc { get; private set; }
-
     public Lesson(Guid? id, Title title, Description description)
     {
         Id = id ?? Guid.NewGuid();
@@ -31,4 +17,18 @@ public sealed class Lesson
 
     // EF core
     private Lesson() { }
+
+    public Guid Id { get; private set; }
+
+    public Title Title { get; private set; }
+
+    public Description Description { get; private set; }
+
+    public DateTime CreatedAtUtc { get; }
+
+    public DateTime UpdatedAtUtc { get; private set; }
+
+    public bool IsDeleted { get; private set; }
+
+    public DateTime? DeletedAtUtc { get; private set; }
 }

@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    
+
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>All</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -13,7 +13,7 @@
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnableStyleCopAnalyzers>true</EnableStyleCopAnalyzers>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers">
       <PrivateAssets>all</PrivateAssets>

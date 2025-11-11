@@ -7,16 +7,18 @@ public sealed record Description
 {
     public const int MaxLength = 1000;
 
-    public string Value { get; }
-
     private Description(string value)
-        => Value = value;
+    {
+        Value = value;
+    }
+
+    public string Value { get; }
 
     public static Result<Description, Error> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value) || value.Length > MaxLength)
         {
-            return Error.Validation("description.invalid", "Description is too long or empty", "title");
+            return GeneralErrors.ValueIsInvalid("description");
         }
 
         return new Description(value);

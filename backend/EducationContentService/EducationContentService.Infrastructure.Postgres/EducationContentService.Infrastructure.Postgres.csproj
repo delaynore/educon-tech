@@ -4,4 +4,8 @@
     <ProjectReference Include="..\EducationContentService.UseCases\EducationContentService.UseCases.csproj"/>
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+  </ItemGroup>
+
 </Project>

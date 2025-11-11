@@ -4,20 +4,6 @@ namespace EducationContentService.Domain.Modules;
 
 public sealed class Module
 {
-    public Guid Id { get; private set; }
-
-    public Title Title { get; private set; }
-
-    public Description Description { get; private set; }
-
-    public DateTime CreatedAtUtc { get; private set; }
-
-    public DateTime UpdatedAtUtc { get; private set; }
-
-    public bool IsDeleted { get; private set; }
-
-    public DateTime? DeletedAtUtc { get; private set; }
-
     public Module(Guid? id, Title title, Description description)
     {
         Id = id ?? Guid.NewGuid();
@@ -31,4 +17,18 @@ public sealed class Module
 
     // EF core
     private Module() { }
+
+    public Guid Id { get; private set; }
+
+    public Title Title { get; private set; }
+
+    public Description Description { get; private set; }
+
+    public DateTime CreatedAtUtc { get; }
+
+    public DateTime UpdatedAtUtc { get; private set; }
+
+    public bool IsDeleted { get; private set; }
+
+    public DateTime? DeletedAtUtc { get; private set; }
 }

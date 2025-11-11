@@ -1,38 +1,46 @@
 namespace EducationContentService.Domain.Shared;
 
+public sealed record ErrorMessage(string Code, string Message, string? InvalidField = null);
+
 public sealed record Error
 {
-    public string Code { get; }
+    private Error(IEnumerable<ErrorMessage> messages, ErrorType type)
+    {
+        Messages = [.. messages];
+        Type = type;
+    }
 
-    public string Message { get; }
+    public IReadOnlyList<ErrorMessage> Messages { get; }
 
     public ErrorType Type { get; }
 
-    public string? InvalidField { get; }
-
-    private Error(string code, string message, ErrorType type, string? invalidField = null)
+    public static Error Validation(params IEnumerable<ErrorMessage> messages)
     {
-        Code = code;
-        Message = message;
-        Type = type;
-        InvalidField = invalidField;
+        return new Error(messages, ErrorType.Validation);
     }
 
-    public static Error Validation(string code, string message, string? invalidField = null)
-        => new(code, message, ErrorType.Validation, invalidField);
+    public static Error NotFound(params IEnumerable<ErrorMessage> messages)
+    {
+        return new Error(messages, ErrorType.NotFound);
+    }
 
-    public static Error NotFound(string code, string message)
-        => new(code, message, ErrorType.NotFound);
+    public static Error Failure(params IEnumerable<ErrorMessage> messages)
+    {
+        return new Error(messages, ErrorType.Failure);
+    }
 
-    public static Error Failure(string code, string message)
-        => new(code, message, ErrorType.Failure);
+    public static Error Conflict(params IEnumerable<ErrorMessage> messages)
+    {
+        return new Error(messages, ErrorType.Conflict);
+    }
 
-    public static Error Conflict(string code, string message)
-        => new(code, message, ErrorType.Conflict);
+    public static Error Authentication(params IEnumerable<ErrorMessage> messages)
+    {
+        return new Error(messages, ErrorType.Authentication);
+    }
 
-    public static Error Authentication(string code, string message)
-        => new(code, message, ErrorType.Authentication);
-
-    public static Error Authorization(string code, string message)
-        => new(code, message, ErrorType.Authorization);
+    public static Error Authorization(params IEnumerable<ErrorMessage> messages)
+    {
+        return new Error(messages, ErrorType.Authorization);
+    }
 }
