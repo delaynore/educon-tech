@@ -14,33 +14,39 @@ public sealed record Error
 
     public ErrorType Type { get; }
 
+    public static Error Validation(string code, string message, string? invalidField = null)
+        => new([new(code, message, invalidField)], ErrorType.Validation);
+
+    public static Error NotFound(string code, string message, string? invalidField = null)
+        => new([new(code, message, invalidField)], ErrorType.NotFound);
+
+    public static Error Failure(string code, string message, string? invalidField = null)
+        => new([new(code, message, invalidField)], ErrorType.Failure);
+
+    public static Error Conflict(string code, string message, string? invalidField = null)
+        => new([new(code, message, invalidField)], ErrorType.Conflict);
+
+    public static Error Authentication(string code, string message, string? invalidField = null)
+        => new([new(code, message, invalidField)], ErrorType.Authentication);
+
+    public static Error Authorization(string code, string message, string? invalidField = null)
+        => new([new(code, message, invalidField)], ErrorType.Authorization);
+
     public static Error Validation(params IEnumerable<ErrorMessage> messages)
-    {
-        return new Error(messages, ErrorType.Validation);
-    }
+        => new(messages, ErrorType.Validation);
 
     public static Error NotFound(params IEnumerable<ErrorMessage> messages)
-    {
-        return new Error(messages, ErrorType.NotFound);
-    }
+        => new(messages, ErrorType.NotFound);
 
     public static Error Failure(params IEnumerable<ErrorMessage> messages)
-    {
-        return new Error(messages, ErrorType.Failure);
-    }
+        => new(messages, ErrorType.Failure);
 
     public static Error Conflict(params IEnumerable<ErrorMessage> messages)
-    {
-        return new Error(messages, ErrorType.Conflict);
-    }
+        => new(messages, ErrorType.Conflict);
 
     public static Error Authentication(params IEnumerable<ErrorMessage> messages)
-    {
-        return new Error(messages, ErrorType.Authentication);
-    }
+        => new(messages, ErrorType.Authentication);
 
     public static Error Authorization(params IEnumerable<ErrorMessage> messages)
-    {
-        return new Error(messages, ErrorType.Authorization);
-    }
+        => new(messages, ErrorType.Authorization);
 }

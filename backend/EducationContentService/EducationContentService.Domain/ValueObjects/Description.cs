@@ -16,11 +16,18 @@ public sealed record Description
 
     public static Result<Description, Error> Create(string value)
     {
-        if (string.IsNullOrWhiteSpace(value) || value.Length > MaxLength)
+        if (string.IsNullOrWhiteSpace(value))
         {
-            return GeneralErrors.ValueIsInvalid("description");
+            return GeneralErrors.ValueIsInvalid("title");
         }
 
-        return new Description(value);
+        var normalizedValue = RegexExtensions.SpaceRemoveRegex().Replace(value.Trim(), " ");
+
+        if (normalizedValue.Length > MaxLength)
+        {
+            return GeneralErrors.ValueIsInvalid("title");
+        }
+
+        return new Description(normalizedValue);
     }
 }

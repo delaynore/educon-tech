@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using EducationContentService.Domain.Shared;
 
@@ -16,11 +17,18 @@ public sealed record Title
 
     public static Result<Title, Error> Create(string value)
     {
-        if (string.IsNullOrWhiteSpace(value) || value.Length > MaxLength)
+        if (string.IsNullOrWhiteSpace(value))
         {
             return GeneralErrors.ValueIsInvalid("title");
         }
 
-        return new Title(value);
+        var normalizedValue = RegexExtensions.SpaceRemoveRegex().Replace(value.Trim(), " ");
+
+        if (normalizedValue.Length > MaxLength)
+        {
+            return GeneralErrors.ValueIsInvalid("title");
+        }
+
+        return new Title(normalizedValue);
     }
 }

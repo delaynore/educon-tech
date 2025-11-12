@@ -4,22 +4,22 @@ public static class EducationErrors
 {
     public static Error TitleConflict(string title)
     {
-        return Error.Conflict(new ErrorMessage(
+        return Error.Conflict(
             "lesson.title.conflict",
-            $"Урок с заголовком {title} уже существует"));
+            $"Урок с заголовком {title} уже существует");
     }
 
     public static Error DatabaseError()
     {
-        return Error.Failure(new ErrorMessage(
+        return Error.Failure(
             "education.database.error",
-            "Ошибка базы данных при работе с сервисом - education"));
+            "Ошибка базы данных при работе с сервисом - education");
     }
 
     public static Error OperationCancelled()
     {
-        return Error.Failure(new ErrorMessage(
+        return Error.Failure(
             "education.operation.cancelled",
-            "Операция была отменена"));
+            "Операция была отменена");
     }
 }
