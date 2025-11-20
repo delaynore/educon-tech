@@ -1,6 +1,14 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using EducationContentService.Web.Extensions;
+using Microsoft.AspNetCore.Http.Json;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var env = builder.Environment;
 

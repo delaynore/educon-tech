@@ -1,6 +1,7 @@
+using System.Net;
 using Microsoft.AspNetCore.Routing;
 
-namespace EducationContentService.UseCases;
+namespace EducationContentService.UseCases.Endpoints;
 
 public interface IEndpoint
 {

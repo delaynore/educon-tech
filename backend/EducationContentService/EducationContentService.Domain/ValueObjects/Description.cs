@@ -18,14 +18,14 @@ public sealed record Description
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            return GeneralErrors.ValueIsInvalid("title");
+            return GeneralErrors.ValueIsInvalid("description");
         }
 
         var normalizedValue = RegexExtensions.SpaceRemoveRegex().Replace(value.Trim(), " ");
 
         if (normalizedValue.Length > MaxLength)
         {
-            return GeneralErrors.ValueIsInvalid("title");
+            return GeneralErrors.ValueIsInvalid("description");
         }
 
         return new Description(normalizedValue);

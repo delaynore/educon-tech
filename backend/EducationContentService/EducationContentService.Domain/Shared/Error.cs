@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace EducationContentService.Domain.Shared;
 
 public sealed record ErrorMessage(string Code, string Message, string? InvalidField = null);
@@ -10,9 +12,18 @@ public sealed record Error
         Type = type;
     }
 
+    [JsonConstructor]
+    private Error(IReadOnlyList<ErrorMessage> messages, ErrorType type)
+    {
+        Messages = [.. messages];
+        Type = type;
+    }
+
     public IReadOnlyList<ErrorMessage> Messages { get; }
 
     public ErrorType Type { get; }
+
+    public string GetMessage() => string.Join(';', Messages);
 
     public static Error Validation(string code, string message, string? invalidField = null)
         => new([new(code, message, invalidField)], ErrorType.Validation);
