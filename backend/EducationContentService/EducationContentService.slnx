@@ -1,16 +1,15 @@
 <Solution>
-    <Folder Name="/common/">
-        <File Path=".gitignore"/>
-        <File Path=".editorconfig"/>
-        <File Path="Directory.Build.props"/>
-        <File Path="Directory.Packages.props"/>
-        <File Path="Dockerfile"/>
-        <File Path=".dockerignore"/>
-    </Folder>
-    <Project Path="EducationContentService.Domain\EducationContentService.Domain.csproj" Type="Classic C#"/>
-    <Project
-            Path="EducationContentService.Infrastructure.Postgres\EducationContentService.Infrastructure.Postgres.csproj"
-            Type="Classic C#"/>
-    <Project Path="EducationContentService.UseCases\EducationContentService.UseCases.csproj" Type="Classic C#"/>
-    <Project Path="EducationContentService.Web/EducationContentService.Web.csproj"/>
+  <Folder Name="/common/">
+    <File Path=".gitignore" />
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="Dockerfile" />
+    <File Path=".dockerignore" />
+  </Folder>
+  <Project Path="EducationContentService.Contracts\EducationContentService.Contracts.csproj" Type="Classic C#" />
+  <Project Path="EducationContentService.Domain\EducationContentService.Domain.csproj" Type="Classic C#" />
+  <Project Path="EducationContentService.Infrastructure.Postgres\EducationContentService.Infrastructure.Postgres.csproj" Type="Classic C#" />
+  <Project Path="EducationContentService.UseCases\EducationContentService.UseCases.csproj" Type="Classic C#" />
+  <Project Path="EducationContentService.Web/EducationContentService.Web.csproj" />
 </Solution>

@@ -1,13 +1,14 @@
-using System.Reflection;
 using EducationContentService.Domain.Lessons;
-using EducationContentService.Domain.ModuleItems;
+using EducationContentService.UseCases.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace EducationContentService.Infrastructure.Postgres;
 
-public sealed class EducationDbContext : DbContext
+public sealed class EducationDbContext : DbContext, IEducationReadDbContext
 {
     public DbSet<Lesson> Lessons { get; set; } = null!;
+
+    public IQueryable<Lesson> LessonQuery => Lessons.AsNoTracking().AsQueryable();
 
     // public DbSet<Module> Modules { get; set; } = null!;
     // public DbSet<ModuleItem> ModuleItems { get; set; } = null!;

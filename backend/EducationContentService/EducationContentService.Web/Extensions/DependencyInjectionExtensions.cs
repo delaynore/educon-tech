@@ -1,7 +1,6 @@
 using EducationContentService.Infrastructure.Postgres;
 using EducationContentService.UseCases;
 using EducationContentService.UseCases.Endpoints;
-using EducationContentService.UseCases.Features.Lessons;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Serilog.Exceptions;

@@ -10,6 +10,8 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<CreateHandler>();
+        services.AddScoped<GetHandler>();
+        services.AddScoped<SoftDeleteHandler>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 

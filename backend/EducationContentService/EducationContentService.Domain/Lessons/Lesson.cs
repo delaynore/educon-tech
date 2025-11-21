@@ -31,4 +31,18 @@ public sealed class Lesson
     public bool IsDeleted { get; private set; }
 
     public DateTime? DeletedAtUtc { get; private set; }
+
+    public void SoftDelete()
+    {
+        IsDeleted = true;
+        DeletedAtUtc = DateTime.UtcNow;
+    }
+
+    public void UpdateInfo(Title title, Description description)
+    {
+        Title = title;
+        Description = description;
+
+        UpdatedAtUtc = DateTime.UtcNow;
+    }
 }

@@ -1,3 +1,4 @@
+using EducationContentService.UseCases.Database;
 using EducationContentService.UseCases.Features.Lessons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,8 @@ public static class DependencyInjectionExtensions
         });
 
         services.AddScoped<ILessonsRepository, LessonsRepository>();
+        services.AddScoped<IEducationReadDbContext, EducationDbContext>();
+        services.AddScoped<ITransactionManager, TransactionManager>();
 
         return services;
     }

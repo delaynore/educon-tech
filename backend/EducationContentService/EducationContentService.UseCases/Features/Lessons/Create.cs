@@ -1,4 +1,5 @@
 using CSharpFunctionalExtensions;
+using EducationContentService.Contracts.Lessons;
 using EducationContentService.Domain.Lessons;
 using EducationContentService.Domain.Shared;
 using EducationContentService.Domain.ValueObjects;
@@ -9,11 +10,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
-using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace EducationContentService.UseCases.Features.Lessons;
-
-public sealed record CreateLessonRequest(string Title, string Description);
 
 public sealed class CreateLessonRequestValidator : AbstractValidator<CreateLessonRequest>
 {

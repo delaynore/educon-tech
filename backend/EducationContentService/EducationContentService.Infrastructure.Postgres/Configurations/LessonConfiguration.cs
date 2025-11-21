@@ -1,5 +1,4 @@
 using EducationContentService.Domain.Lessons;
-using EducationContentService.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -15,13 +14,21 @@ public sealed class LessonConfiguration : IEntityTypeConfiguration<Lesson>
 
         builder.Property(x => x.Id).HasColumnName("id");
 
-        builder.Property(x => x.Title)
-            .HasConversion(v => v.Value, v => Title.Create(v).Value)
-            .HasColumnName("title");
+        builder.OwnsOne(x => x.Title, navigationBuilder =>
+        {
+            navigationBuilder.Property(x => x.Value)
+                .HasColumnName("title");
 
-        builder.Property(x => x.Description)
-            .HasConversion(v => v.Value, v => Description.Create(v).Value)
-            .HasColumnName("description");
+            navigationBuilder.HasIndex(x => x.Value)
+                .IsUnique()
+                .HasDatabaseName(DbIndex.LessonTitle);
+        });
+
+        builder.OwnsOne(x => x.Description, navigationBuilder =>
+        {
+            navigationBuilder.Property(x => x.Value)
+                .HasColumnName("description");
+        });
 
         builder.Property(x => x.IsDeleted)
             .HasDefaultValue(false)
@@ -40,10 +47,6 @@ public sealed class LessonConfiguration : IEntityTypeConfiguration<Lesson>
             .IsRequired()
             .HasDefaultValueSql("timezone('utc', now())")
             .HasColumnName("updated_at");
-
-        builder.HasIndex(x => x.Title)
-            .IsUnique()
-            .HasDatabaseName(DbIndex.LessonTitle);
 
         builder.HasQueryFilter(x => !x.IsDeleted);
     }

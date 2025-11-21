@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using CSharpFunctionalExtensions;
 using EducationContentService.Domain.Lessons;
 using EducationContentService.Domain.Shared;
@@ -54,5 +55,17 @@ public sealed class LessonsRepository : ILessonsRepository
 
             return EducationErrors.DatabaseError();
         }
+    }
+
+    public async Task<Result<Lesson, Error>> GetByAsync(Expression<Func<Lesson, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        var lesson = await _educationDbContext.Lessons.FirstOrDefaultAsync(predicate, cancellationToken);
+
+        if (lesson is null)
+        {
+            return GeneralErrors.NotFound(id: null, name: "lesson");
+        }
+
+        return lesson;
     }
 }

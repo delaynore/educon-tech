@@ -1,6 +1,5 @@
 using EducationContentService.Domain.Shared;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing.Template;
 using IResult = Microsoft.AspNetCore.Http.IResult;
 
 namespace EducationContentService.UseCases.Endpoints;

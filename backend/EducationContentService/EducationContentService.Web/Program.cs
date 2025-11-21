@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using EducationContentService.Web.Extensions;
 using Microsoft.AspNetCore.Http.Json;
