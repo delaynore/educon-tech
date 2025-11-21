@@ -9,10 +9,8 @@ public sealed class EducationDbContext : DbContext
 {
     public DbSet<Lesson> Lessons { get; set; } = null!;
 
-    public DbSet<Module> Modules { get; set; } = null!;
-
-    public DbSet<ModuleItem> ModuleItems { get; set; } = null!;
-
+    // public DbSet<Module> Modules { get; set; } = null!;
+    // public DbSet<ModuleItem> ModuleItems { get; set; } = null!;
     public EducationDbContext(DbContextOptions<EducationDbContext> options)
         : base(options)
     {

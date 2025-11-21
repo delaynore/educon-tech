@@ -1,6 +1,7 @@
 using CSharpFunctionalExtensions;
 using EducationContentService.Domain.Lessons;
 using EducationContentService.Domain.Shared;
+using EducationContentService.Infrastructure.Postgres.Configurations;
 using EducationContentService.UseCases.Features.Lessons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -32,7 +33,7 @@ public sealed class LessonsRepository : ILessonsRepository
         catch (DbUpdateException e) when (e.InnerException is PostgresException pgException)
         {
             if (pgException is { SqlState: PostgresErrorCodes.UniqueViolation, ConstraintName: not null }
-                && pgException.ConstraintName.Contains("title",  StringComparison.InvariantCultureIgnoreCase))
+                && pgException.ConstraintName.Contains(DbIndex.LessonTitle,  StringComparison.InvariantCultureIgnoreCase))
             {
                 return EducationErrors.TitleConflict(lesson.Title.Value);
             }
