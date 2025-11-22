@@ -1,5 +1,6 @@
 using CSharpFunctionalExtensions;
 using EducationContentService.Domain.Shared;
+using SharedKernel;
 
 namespace EducationContentService.Domain.ModuleItems;
 

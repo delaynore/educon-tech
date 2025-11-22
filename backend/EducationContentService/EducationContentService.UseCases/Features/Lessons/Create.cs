@@ -1,15 +1,15 @@
+using Core.Validation;
 using CSharpFunctionalExtensions;
 using EducationContentService.Contracts.Lessons;
 using EducationContentService.Domain.Lessons;
-using EducationContentService.Domain.Shared;
 using EducationContentService.Domain.ValueObjects;
-using EducationContentService.UseCases.Endpoints;
-using EducationContentService.UseCases.Validation;
 using FluentValidation;
+using Framework.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using SharedKernel;
 
 namespace EducationContentService.UseCases.Features.Lessons;
 
@@ -72,10 +72,10 @@ public sealed class CreateHandler
 
         var lesson = new Lesson(Guid.NewGuid(), title, description);
 
-        var result = await _lessonsRepository.AddAsync(lesson, cancellationToken);
-        if (result.IsFailure)
+        var (_, isFailure, _, error) = await _lessonsRepository.AddAsync(lesson, cancellationToken);
+        if (isFailure)
         {
-            return result.Error;
+            return error;
         }
 
         _logger.LogInformation("Created lesson {Id}", lesson.Id);

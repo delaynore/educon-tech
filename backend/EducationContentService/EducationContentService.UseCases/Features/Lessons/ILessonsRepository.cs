@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using CSharpFunctionalExtensions;
 using EducationContentService.Domain.Lessons;
-using EducationContentService.Domain.Shared;
+using SharedKernel;
 
 namespace EducationContentService.UseCases.Features.Lessons;
 

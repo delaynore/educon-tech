@@ -1,11 +1,11 @@
 using CSharpFunctionalExtensions;
-using EducationContentService.Domain.Shared;
 using EducationContentService.UseCases.Database;
-using EducationContentService.UseCases.Endpoints;
+using Framework.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using SharedKernel;
 
 namespace EducationContentService.UseCases.Features.Lessons;
 

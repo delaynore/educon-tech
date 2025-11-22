@@ -1,15 +1,15 @@
+using Core.Validation;
 using CSharpFunctionalExtensions;
 using EducationContentService.Contracts.Lessons;
-using EducationContentService.Domain.Shared;
 using EducationContentService.Domain.ValueObjects;
 using EducationContentService.UseCases.Database;
-using EducationContentService.UseCases.Endpoints;
-using EducationContentService.UseCases.Validation;
 using FluentValidation;
+using Framework.Endpoints;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using SharedKernel;
 
 namespace EducationContentService.UseCases.Features.Lessons;
 

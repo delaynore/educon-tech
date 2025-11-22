@@ -6,11 +6,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="dlyn.core" />
+    <PackageReference Include="dlyn.framework" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
   </ItemGroup>
 

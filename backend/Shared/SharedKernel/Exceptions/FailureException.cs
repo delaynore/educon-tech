@@ -1,0 +1,26 @@
+namespace SharedKernel.Exceptions;
+
+public sealed class FailureException : Exception
+{
+    public Error Error { get; set; }
+
+    public FailureException(Error error)
+        : base(error.GetMessage())
+    {
+        Error = error;
+    }
+
+    public FailureException()
+    {
+    }
+
+    public FailureException(string message)
+        : base(message)
+    {
+    }
+
+    public FailureException(string message, Exception innerException)
+        : base(message, innerException)
+    {
+    }
+}

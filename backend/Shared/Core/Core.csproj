@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>Dlyn.Core</PackageId>
+    <Version>0.0.2</Version>
+    <Authors>Delaynore</Authors>
+    <Company>Delaynore</Company>
+    <Description>Core</Description>
+    <RepositoryUrl>https://github.com/delaynore/educon-tech</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation"/>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
+    <PackageReference Include="Scrutor"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SharedKernel\SharedKernel.csproj"/>
+  </ItemGroup>
+
+</Project>

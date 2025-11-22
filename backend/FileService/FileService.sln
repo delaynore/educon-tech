@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileService.Web", "FileService.Web\FileService.Web.csproj", "{64318301-7111-4476-BD6E-A1209DFF073E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64318301-7111-4476-BD6E-A1209DFF073E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64318301-7111-4476-BD6E-A1209DFF073E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64318301-7111-4476-BD6E-A1209DFF073E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64318301-7111-4476-BD6E-A1209DFF073E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

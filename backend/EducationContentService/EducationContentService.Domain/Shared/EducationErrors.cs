@@ -1,3 +1,5 @@
+using SharedKernel;
+
 namespace EducationContentService.Domain.Shared;
 
 public static class EducationErrors

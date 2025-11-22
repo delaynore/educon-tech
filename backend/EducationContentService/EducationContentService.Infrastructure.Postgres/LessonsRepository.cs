@@ -7,6 +7,7 @@ using EducationContentService.UseCases.Features.Lessons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using SharedKernel;
 
 namespace EducationContentService.Infrastructure.Postgres;
 
