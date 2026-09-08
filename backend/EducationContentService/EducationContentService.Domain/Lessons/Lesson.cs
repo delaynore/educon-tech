@@ -24,7 +24,9 @@ public sealed class Lesson
 
     public Description Description { get; private set; }
 
-    public DateTime CreatedAtUtc { get; }
+    public Guid? VideoId { get; private set; }
+
+    public DateTime CreatedAtUtc { get; private set; }
 
     public DateTime UpdatedAtUtc { get; private set; }
 

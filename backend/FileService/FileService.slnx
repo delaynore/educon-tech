@@ -1,0 +1,13 @@
+<Solution>
+    <Folder Name="/common/">
+        <File Path=".editorconfig"/>
+        <File Path=".gitignore"/>
+        <File Path="Directory.Build.props"/>
+        <File Path="Directory.Packages.props"/>
+    </Folder>
+    <Project Path="FileService.Domain\FileService.Domain.csproj" Type="Classic C#"/>
+    <Project Path="FileService.Infrastructure.Postgres\FileService.Infrastructure.Postgres.csproj" Type="Classic C#"/>
+    <Project Path="FileService.Infrastructure.S3\FileService.Infrastructure.S3.csproj" Type="Classic C#"/>
+    <Project Path="FileService.UseCases\FileService.UseCases.csproj" Type="Classic C#"/>
+    <Project Path="FileService.Web/FileService.Web.csproj"/>
+</Solution>

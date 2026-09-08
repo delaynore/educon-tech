@@ -1,17 +1,17 @@
 services:
-  education-content-service:
-    container_name: education-content-service
-    build:
-      context: ./backend/EducationContentService
-      dockerfile: Dockerfile
-    ports:
-      - "9001:9001"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Docker
-      - ASPNETCORE_HTTP_PORTS=9001
-    restart: always
-    depends_on: 
-      - seq
+  # education-content-service:
+  #   container_name: education-content-service
+  #   build:
+  #     context: ./backend/EducationContentService
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "9001:9001"
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Docker
+  #     - ASPNETCORE_HTTP_PORTS=9001
+  #   restart: always
+  #   depends_on: 
+  #     - seq
   seq:
     container_name: seq
     image: datalust/seq:latest
@@ -36,4 +36,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: always
+
+  minio:
+    container_name: minio
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server --console-address ":9001" /data
     restart: always
