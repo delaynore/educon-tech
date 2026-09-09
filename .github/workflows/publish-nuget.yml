@@ -26,7 +26,7 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Restore
-        run: dotnet restore Shared/Shared.sln
+        run: dotnet restore backend/Shared/Shared.sln
 
       - name: Pack packages
         run: |
