@@ -39,13 +39,14 @@ public sealed class ExceptionMiddleware
             ValidationException ex => (StatusCodes.Status400BadRequest, ex.Error),
             ConflictException ex => (StatusCodes.Status409Conflict, ex.Error),
             FailureException ex => (StatusCodes.Status500InternalServerError, ex.Error),
-            AuthenticationException => (StatusCodes.Status401Unauthorized, Error.Failure("authentication.failed", exception.Message)),
-            _ => (StatusCodes.Status400BadRequest, Error.Failure("server.internal", exception.Message)),
+            AuthenticationException => (StatusCodes.Status401Unauthorized,
+                Error.Failure("authentication.failed", exception.Message)),
+            _ => (StatusCodes.Status500InternalServerError, Error.Failure("server.internal", exception.Message)),
         };
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        _logger.LogError(exception, "Exception was thrown in education service");
+        _logger.LogError(exception, "Exception was thrown in service");
 
         var (statusCode, error) = GetStatusCodeAndError(exception);
 

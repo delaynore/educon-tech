@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>Dlyn.Framework</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Delaynore</Authors>
     <Company>Delaynore</Company>
     <Description>Framework</Description>
