@@ -24,7 +24,7 @@ public sealed class Module
 
     public Description Description { get; private set; }
 
-    public DateTime CreatedAtUtc { get; }
+    public DateTime CreatedAtUtc { get; private set; }
 
     public DateTime UpdatedAtUtc { get; private set; }
 

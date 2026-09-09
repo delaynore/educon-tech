@@ -17,5 +17,5 @@
     <ProjectReference Include="..\EducationContentService.Infrastructure.Postgres\EducationContentService.Infrastructure.Postgres.csproj"/>
     <ProjectReference Include="..\EducationContentService.UseCases\EducationContentService.UseCases.csproj"/>
   </ItemGroup>
-  
+
 </Project>

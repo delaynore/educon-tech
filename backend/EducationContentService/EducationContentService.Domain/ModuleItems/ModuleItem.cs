@@ -21,7 +21,7 @@ public sealed class ModuleItem
 
     public ItemReference ItemReference { get; private set; }
 
-    public DateTime CreatedAtUtc { get; }
+    public DateTime CreatedAtUtc { get; private set; }
 
     public DateTime UpdatedAtUtc { get; private set; }
 

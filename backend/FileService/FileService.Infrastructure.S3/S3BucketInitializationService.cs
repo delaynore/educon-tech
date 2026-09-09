@@ -103,11 +103,11 @@ public sealed class S3BucketInitializationService : BackgroundService
 
             await _s3Client.PutBucketPolicyAsync(putBucketPolicyRequest, cancellationToken);
 
-            _logger.LogInformation("Bucket {BucketName} created succesfully", bucketName);
+            _logger.LogInformation("Bucket {BucketName} created successfully", bucketName);
         }
         catch (Exception e)
         {
-            _logger.LogError(e, "Failed to initialize bucket {BuckerName}", bucketName);
+            _logger.LogError(e, "Failed to initialize bucket {BucketName}", bucketName);
             throw;
         }
     }

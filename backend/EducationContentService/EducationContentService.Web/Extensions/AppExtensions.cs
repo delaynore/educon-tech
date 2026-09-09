@@ -14,13 +14,12 @@ public static class AppExtensions
 
         app.MapOpenApi();
 
-        app.UseSwagger();
         app.UseSwaggerUI(options =>
         {
             options.SwaggerEndpoint("/openapi/v1.json", "Education Content Service v1");
         });
 
-        var apiGroup = app.MapGroup("/api").WithOpenApi();
+        var apiGroup = app.MapGroup("/api");
 
         app.MapEndpoints(apiGroup);
 
