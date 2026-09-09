@@ -3,7 +3,7 @@ name: Publish NuGet packages
 on:
   push:
     branches:
-      - master
+      - main
 
 permissions:
   contents: read
@@ -26,13 +26,13 @@ jobs:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore Shared/Shared.sln
 
       - name: Pack packages
         run: |
           mkdir -p ./packages
 
-          for project in $(find . -name "*.csproj"); do
+          find Shared -name "*.csproj" -print0 | while IFS= read -r -d '' project; do
             echo "Packing $project"
 
             dotnet pack "$project" \
@@ -45,6 +45,7 @@ jobs:
         run: |
           for package in ./packages/*.nupkg; do
             echo "Publishing $package"
+
             dotnet nuget push "$package" \
               --source github \
               --skip-duplicate
