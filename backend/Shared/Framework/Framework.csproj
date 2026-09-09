@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>Dlyn.Framework</PackageId>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <Authors>Delaynore</Authors>
     <Company>Delaynore</Company>
     <Description>Framework</Description>
@@ -23,8 +23,6 @@
     <PackageReference Include="Serilog.AspNetCore"/>
     <PackageReference Include="Serilog.Enrichers.Environment"/>
     <PackageReference Include="Serilog.Enrichers.Thread"/>
-    <PackageReference Include="Serilog.Exceptions"/>
-    <PackageReference Include="Serilog.Exceptions.EntityFrameworkCore"/>
     <PackageReference Include="Serilog.Extensions.Hosting"/>
     <PackageReference Include="Serilog.Extensions.Logging"/>
     <PackageReference Include="Serilog.Settings.Configuration"/>
