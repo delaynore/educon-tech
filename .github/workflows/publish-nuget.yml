@@ -1,0 +1,51 @@
+name: Publish NuGet packages
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Pack packages
+        run: |
+          mkdir -p ./packages
+
+          for project in $(find . -name "*.csproj"); do
+            echo "Packing $project"
+
+            dotnet pack "$project" \
+              --configuration Release \
+              --no-restore \
+              --output ./packages
+          done
+
+      - name: Publish packages
+        run: |
+          for package in ./packages/*.nupkg; do
+            echo "Publishing $package"
+            dotnet nuget push "$package" \
+              --source github \
+              --skip-duplicate
+          done
