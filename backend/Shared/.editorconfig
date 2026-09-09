@@ -26,6 +26,7 @@ insert_final_newline = true
 
 ### StyleCop
 
+dotnet_diagnostic.SA1512.severity = none
 dotnet_diagnostic.SA0001.severity = none
 dotnet_diagnostic.SA1200.severity = none
 dotnet_diagnostic.SA1600.severity = none

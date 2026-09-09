@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi;
 
 namespace Framework.Swagger;
 
@@ -7,16 +6,25 @@ public static class OpenApiExtensions
 {
     public static IServiceCollection AddOpenApiSpec(this IServiceCollection services, string title, string version)
     {
-        services.AddOpenApi();
-
-        services.AddSwaggerGen(options =>
+        services.AddOpenApi(options =>
         {
-            options.SwaggerDoc(version, new OpenApiInfo
+            options.AddDocumentTransformer((document, _, _) =>
             {
-                Title = title,
-                Version = version,
+                document.Info.Title = title;
+                document.Info.Version = version;
+
+                return Task.CompletedTask;
             });
         });
+
+        // services.AddSwaggerGen(options =>
+        // {
+        //     options.SwaggerDoc(version, new OpenApiInfo
+        //     {
+        //         Title = title,
+        //         Version = version,
+        //     });
+        // });
 
         return services;
     }
