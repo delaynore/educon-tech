@@ -1,5 +1,7 @@
 using Amazon.S3;
+using FileService.UseCases;
 using FileService.UseCases.Features;
+using FileService.UseCases.FilesStorage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -27,6 +29,7 @@ public static class DependencyInjectionExtensions
         });
 
         services.AddScoped<IS3Provider, S3Provider>();
+        services.AddTransient<IChunkSizeCalculator, ChunkSizeCalculator>();
 
         services.AddHostedService<S3BucketInitializationService>();
 

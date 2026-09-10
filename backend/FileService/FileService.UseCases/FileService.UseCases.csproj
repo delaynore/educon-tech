@@ -2,5 +2,10 @@
   <ItemGroup>
     <PackageReference Include="Dlyn.Core"/>
     <PackageReference Include="Dlyn.Framework"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileService.Contracts\FileService.Contracts.csproj"/>
+    <ProjectReference Include="..\FileService.Domain\FileService.Domain.csproj"/>
   </ItemGroup>
 </Project>

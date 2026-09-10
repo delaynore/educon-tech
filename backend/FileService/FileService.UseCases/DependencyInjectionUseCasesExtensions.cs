@@ -1,4 +1,5 @@
 using System.Reflection;
+using FileService.UseCases.Features;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,6 +9,11 @@ public static class DependencyInjectionUseCasesExtensions
 {
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
+        services.AddScoped<StartMultipartUploadHandler>();
+        services.AddScoped<CompleteMultipartUploadEndpoint>();
+        services.AddScoped<GetMediaAssetInfoHandler>();
+        services.AddScoped<GetMediaAssetsHandler>();
+
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         return services;

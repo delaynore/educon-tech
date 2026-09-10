@@ -1,3 +1,4 @@
+using FileService.Infrastructure.Postgres;
 using FileService.Infrastructure.S3;
 using FileService.UseCases;
 using Framework.Endpoints;
@@ -17,6 +18,7 @@ public static class DependencyInjectionExtensions
             .AddOpenApiSpec("FileService", " v1")
             .AddUseCases()
             .AddS3(configuration)
+            .AddInfrastructurePostgres(configuration)
             .AddEndpoints(typeof(DependencyInjectionUseCasesExtensions).Assembly);
     }
 }
