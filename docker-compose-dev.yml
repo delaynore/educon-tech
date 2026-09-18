@@ -1,17 +1,26 @@
 services:
-  # education-content-service:
-  #   container_name: education-content-service
-  #   build:
-  #     context: ./backend/EducationContentService
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "9001:9001"
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Docker
-  #     - ASPNETCORE_HTTP_PORTS=9001
-  #   restart: always
-  #   depends_on: 
-  #     - seq
+  education-content-service:
+    container_name: education-content-service
+    build:
+      context: ./backend
+      dockerfile: EducationContentService/Dockerfile
+      args:
+        GITHUB_USERNAME: ${GITHUB_USERNAME}
+      secrets:
+        - github_packages_token
+    ports:
+      - "8080:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_HTTP_PORTS=8080
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      seq:
+        condition: service_started
+      minio:
+        condition: service_started
   seq:
     container_name: seq
     image: datalust/seq:latest
@@ -49,3 +58,7 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     command: server --console-address ":9001" /data
     restart: always
+
+secrets:
+  github_packages_token:
+    environment: GITHUB_PACKAGES_TOKEN

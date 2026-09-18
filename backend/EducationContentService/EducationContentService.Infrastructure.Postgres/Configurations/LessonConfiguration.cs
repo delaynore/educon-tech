@@ -48,6 +48,9 @@ public sealed class LessonConfiguration : IEntityTypeConfiguration<Lesson>
             .HasDefaultValueSql("timezone('utc', now())")
             .HasColumnName("updated_at");
 
+        builder.Property(x => x.VideoId)
+            .HasColumnName("video_id");
+
         builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

@@ -1,31 +1,59 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-USER $APP_UID
-WORKDIR /app
-EXPOSE 8181
+﻿FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
+ARG GITHUB_USERNAME
+
 WORKDIR /src
 
-COPY ["Directory.Build.props", "."]
-COPY ["Directory.Packages.props", "."]
+COPY ["EducationContentService/Directory.Build.props", "."]
+COPY ["EducationContentService/Directory.Packages.props", "."]
+COPY ["nuget.config", "."]
 
-COPY ["EducationContentService.Web/EducationContentService.Web.csproj", "EducationContentService.Web/"]
-COPY ["EducationContentService.Infrastructure.Postgres/EducationContentService.Infrastructure.Postgres.csproj", "EducationContentService.Infrastructure.Postgres/"]
-COPY ["EducationContentService.UseCases/EducationContentService.UseCases.csproj", "EducationContentService.UseCases/"]
-COPY ["EducationContentService.Domain/EducationContentService.Domain.csproj", "EducationContentService.Domain/"]
+COPY ["EducationContentService/EducationContentService.Contracts/EducationContentService.Contracts.csproj", "EducationContentService.Contracts/"]
+COPY ["EducationContentService/EducationContentService.Web/EducationContentService.Web.csproj", "EducationContentService.Web/"]
+COPY ["EducationContentService/EducationContentService.Infrastructure.Postgres/EducationContentService.Infrastructure.Postgres.csproj", "EducationContentService.Infrastructure.Postgres/"]
+COPY ["EducationContentService/EducationContentService.UseCases/EducationContentService.UseCases.csproj", "EducationContentService.UseCases/"]
+COPY ["EducationContentService/EducationContentService.Domain/EducationContentService.Domain.csproj", "EducationContentService.Domain/"]
+
+RUN --mount=type=secret,id=github_packages_token \
+	dotnet nuget update source github \
+		--username "$GITHUB_USERNAME" \
+		--password $(cat /run/secrets/github_packages_token) \
+		--store-password-in-clear-text
 
 RUN dotnet restore "EducationContentService.Web/EducationContentService.Web.csproj"
 
-COPY . .
+COPY EducationContentService .
+
+RUN dotnet tool install --global dotnet-ef --version 10.0.12
+ENV PATH="/root/.dotnet/tools:${PATH}"
+
 WORKDIR "/src/EducationContentService.Web"
-RUN dotnet build "./EducationContentService.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./EducationContentService.Web.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet ef migrations bundle \
+    --project "../EducationContentService.Infrastructure.Postgres/EducationContentService.Infrastructure.Postgres.csproj" \
+    --startup-project "./EducationContentService.Web.csproj" \
+    --output /app/efbundle \
+    --configuration $BUILD_CONFIGURATION \
+    --verbose
 
-FROM base AS final
+RUN dotnet publish "./EducationContentService.Web.csproj" \
+    -c $BUILD_CONFIGURATION \
+    -o /app/publish \
+    /p:UseAppHost=false \
+    --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
 WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EducationContentService.Web.dll"]
+EXPOSE 8080
+
+COPY --from=build /app/publish .
+COPY --from=build /app/efbundle .
+
+COPY EducationContentService/entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh /app/efbundle
+
+USER $APP_UID
+
+ENTRYPOINT ["/entrypoint.sh"]
