@@ -22,14 +22,14 @@ public sealed class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAsse
 
             mb.OwnsOne(md => md.ContentType, cb =>
             {
-                cb.Property(x => x.Category).HasConversion<string>().HasJsonPropertyName("category");
-                cb.Property(x => x.Value).HasConversion<string>().HasJsonPropertyName("value");
+                cb.Property(x => x.Category).HasJsonPropertyName("category");
+                cb.Property(x => x.Value).HasJsonPropertyName("value");
             });
 
             mb.OwnsOne(md => md.FileName, fb =>
             {
-                fb.Property(x => x.Extension).HasConversion<string>().HasJsonPropertyName("extension");
-                fb.Property(x => x.Name).HasConversion<string>().HasJsonPropertyName("name");
+                fb.Property(x => x.Extension).HasJsonPropertyName("extension");
+                fb.Property(x => x.Name).HasJsonPropertyName("name");
             });
 
             mb.Property(md => md.SizeBytes).HasJsonPropertyName("size_bytes");
@@ -37,8 +37,8 @@ public sealed class MediaAssetConfiguration : IEntityTypeConfiguration<MediaAsse
         });
 
         builder.Property(m => m.Id).HasColumnName("id");
-        builder.Property(m => m.Status).HasConversion<string>().HasColumnName("status");
-        builder.Property(m => m.AssetType).HasConversion<string>().HasColumnName("asset_type");
+        builder.Property(m => m.Status).HasColumnName("status");
+        builder.Property(m => m.AssetType).HasColumnName("asset_type");
 
         builder.OwnsOne(m => m.Owner, ob =>
         {

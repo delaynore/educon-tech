@@ -18,7 +18,11 @@ public class FileServiceDbContext : DbContext, IFileReadDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new MediaAssetConfiguration());
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(FileServiceDbContext).Assembly);
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<Enum>().HaveConversion<string>();
     }
 }

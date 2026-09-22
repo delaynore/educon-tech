@@ -4,4 +4,4 @@ public sealed record StartMultipartUploadResponse(
     Guid MediaAssetId,
     string UploadId,
     IReadOnlyList<ChunkUploadUrl> ChunkUploadUrls,
-    long ChunkSizeBytes);
+    int ChunkSizeBytes);

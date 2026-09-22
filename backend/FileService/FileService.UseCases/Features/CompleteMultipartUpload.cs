@@ -62,6 +62,7 @@ public sealed class CompleteMultipartUploadHandler
             request.UploadId,
             request.PartETags,
             cancellationToken);
+
         if (result.IsFailure)
         {
             mediaAsset.MarkFailed();

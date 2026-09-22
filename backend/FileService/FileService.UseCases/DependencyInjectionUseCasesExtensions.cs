@@ -10,7 +10,7 @@ public static class DependencyInjectionUseCasesExtensions
     public static IServiceCollection AddUseCases(this IServiceCollection services)
     {
         services.AddScoped<StartMultipartUploadHandler>();
-        services.AddScoped<CompleteMultipartUploadEndpoint>();
+        services.AddScoped<CompleteMultipartUploadHandler>();
         services.AddScoped<GetMediaAssetInfoHandler>();
         services.AddScoped<GetMediaAssetsHandler>();
 

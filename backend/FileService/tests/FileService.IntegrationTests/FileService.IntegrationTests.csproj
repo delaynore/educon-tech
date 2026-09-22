@@ -18,4 +18,10 @@
       <ProjectReference Include="..\..\FileService.Web\FileService.Web.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Resources\test_file_MP4_1280_10MG.mp4">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

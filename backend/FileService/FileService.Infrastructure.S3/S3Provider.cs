@@ -65,7 +65,7 @@ public sealed class S3Provider : IDisposable, IS3Provider
     {
         try
         {
-            var tasks = Enumerable.Range(0, totalChunks)
+            var tasks = Enumerable.Range(1, totalChunks)
                 .Select(async partNumber =>
                 {
                     await _maxConcurrentRequestsSemaphore.WaitAsync(cancellationToken);

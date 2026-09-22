@@ -18,7 +18,7 @@ public sealed class S3Options
 
     public int MaxConcurrentRequests { get; init; } = 20;
 
-    public long RecommendedChunkSizeBytes { get; init; } = 100 * 1024 * 1024; // 100 MB
+    public int RecommendedChunkSizeBytes { get; init; } = 100 * 1024 * 1024; // 100 MB
 
     public int MaxChunks { get; init; } = 100;
 

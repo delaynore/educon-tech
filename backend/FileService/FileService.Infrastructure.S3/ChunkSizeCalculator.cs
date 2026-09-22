@@ -14,7 +14,7 @@ public sealed class ChunkSizeCalculator : IChunkSizeCalculator
         _options = options.Value;
     }
 
-    public Result<(long ChunkSizeBytes, int TotalChunks), Error> Calculate(
+    public Result<(int ChunkSizeBytes, int TotalChunks), Error> Calculate(
         long fileSizeBytes)
     {
         if (_options.RecommendedChunkSizeBytes <= 0 || _options.MaxChunks <= 0)
@@ -24,7 +24,7 @@ public sealed class ChunkSizeCalculator : IChunkSizeCalculator
 
         if (fileSizeBytes <= _options.RecommendedChunkSizeBytes)
         {
-            return (fileSizeBytes, 1);
+            return ((int)fileSizeBytes, 1);
         }
 
         var calculatedChunks = (int)Math.Ceiling((double)fileSizeBytes / _options.RecommendedChunkSizeBytes);
@@ -33,6 +33,6 @@ public sealed class ChunkSizeCalculator : IChunkSizeCalculator
 
         var chunkSize = (fileSizeBytes + actualChunks - 1) / actualChunks;
 
-        return (chunkSize, actualChunks);
+        return ((int)chunkSize, actualChunks);
     }
 }

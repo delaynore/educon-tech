@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using CSharpFunctionalExtensions;
 using SharedKernel;
 
@@ -15,6 +16,7 @@ public sealed record StorageKey
 
     public string FullPath { get; init; }
 
+    [JsonConstructor]
     private StorageKey(string location, string prefix, string key)
     {
         Key = key;

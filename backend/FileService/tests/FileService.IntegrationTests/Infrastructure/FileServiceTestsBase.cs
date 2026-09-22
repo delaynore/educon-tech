@@ -1,3 +1,6 @@
+using FileService.Infrastructure.Postgres;
+using Microsoft.Extensions.DependencyInjection;
+
 namespace FileService.IntegrationTests.Infrastructure;
 
 public abstract class FileServiceTestsBase : IClassFixture<IntegrationTestsWebFactory>
@@ -14,4 +17,17 @@ public abstract class FileServiceTestsBase : IClassFixture<IntegrationTestsWebFa
     protected HttpClient AppHttpClient { get; private set; }
 
     protected HttpClient HttpClient { get; private set; }
+
+    protected async Task ExecuteInDbContext(
+        CancellationToken cancellationToken,
+        params Func<FileServiceDbContext, CancellationToken, Task>[] actions)
+    {
+        await using var serviceScope = Services.CreateAsyncScope();
+        var dbContext = serviceScope.ServiceProvider.GetRequiredService<FileServiceDbContext>();
+
+        foreach (var action in actions)
+        {
+            await action(dbContext, cancellationToken);
+        }
+    }
 }
