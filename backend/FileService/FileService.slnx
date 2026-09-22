@@ -5,10 +5,12 @@
         <File Path="Directory.Build.props"/>
         <File Path="Directory.Packages.props"/>
     </Folder>
+    <Folder Name="/tests/"/>
     <Project Path="FileService.Contracts/FileService.Contracts.csproj"/>
-    <Project Path="FileService.Domain\FileService.Domain.csproj" Type="C#"/>
-    <Project Path="FileService.Infrastructure.Postgres\FileService.Infrastructure.Postgres.csproj" Type="C#"/>
-    <Project Path="FileService.Infrastructure.S3\FileService.Infrastructure.S3.csproj" Type="C#"/>
-    <Project Path="FileService.UseCases\FileService.UseCases.csproj" Type="C#"/>
+    <Project Path="FileService.Domain\FileService.Domain.csproj"/>
+    <Project Path="FileService.Infrastructure.Postgres\FileService.Infrastructure.Postgres.csproj"/>
+    <Project Path="FileService.Infrastructure.S3\FileService.Infrastructure.S3.csproj"/>
+    <Project Path="FileService.UseCases\FileService.UseCases.csproj"/>
     <Project Path="FileService.Web/FileService.Web.csproj"/>
+    <Project Path="tests/FileService.IntegrationTests/FileService.IntegrationTests.csproj"/>
 </Solution>

@@ -19,13 +19,9 @@ public abstract class MediaAsset
 
     public StorageKey Key { get; protected set; }
 
-    public MediaOwner Owner { get; protected set; }
+    public MediaOwner? Owner { get; protected set; }
 
     public MediaStatus Status { get; protected set; }
-
-    protected MediaAsset()
-    {
-    }
 
     protected MediaAsset(
         Guid id,
@@ -39,6 +35,10 @@ public abstract class MediaAsset
         AssetType = assetAssetType;
         Status = status;
         Key = key;
+    }
+
+    protected MediaAsset()
+    {
     }
 
     public static Result<MediaAsset, Error> CreateForUpload(MediaData mediaData, AssetType assetType)

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using FileService.Web.Extensions;
 using Microsoft.AspNetCore.Http.Json;
@@ -20,3 +21,7 @@ var app = builder.Build();
 app.Configure();
 
 app.Run();
+
+public partial class Program
+{
+}

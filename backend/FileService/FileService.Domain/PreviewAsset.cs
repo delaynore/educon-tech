@@ -14,6 +14,10 @@ public sealed class PreviewAsset : MediaAsset
 
     public static readonly string[] AllowedExtensions = ["jpg", "jpeg", "png", "webp"];
 
+    private PreviewAsset()
+    {
+    }
+
     private PreviewAsset(
         Guid id,
         MediaData mediaData,
@@ -39,7 +43,7 @@ public sealed class PreviewAsset : MediaAsset
                 $"File content must be {AllowedContentType}");
         }
 
-        if (mediaData.Size > MaxSizeBytes)
+        if (mediaData.SizeBytes > MaxSizeBytes)
         {
             return Error.Validation(
                 "preview.invalid.size",

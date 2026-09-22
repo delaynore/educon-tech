@@ -15,6 +15,10 @@ public sealed class VideoAsset : MediaAsset
 
     public static readonly string[] AllowedExtensions = ["mp4", "mkv", "avi", "mov"];
 
+    private VideoAsset()
+    {
+    }
+
     private VideoAsset(
         Guid id,
         MediaData mediaData,
@@ -40,7 +44,7 @@ public sealed class VideoAsset : MediaAsset
                 $"File content must be {AllowedContentType}");
         }
 
-        if (mediaData.Size > MaxSizeBytes)
+        if (mediaData.SizeBytes > MaxSizeBytes)
         {
             return Error.Validation(
                 "video.invalid.size",

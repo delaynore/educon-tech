@@ -69,7 +69,7 @@ public sealed record GetMediaAssetInfoHandler
             mediaAsset.Status.ToString().ToLowerInvariant(),
             mediaAsset.AssetType.ToString().ToLowerInvariant(),
             url,
-            mediaAsset.MediaData.Size,
+            mediaAsset.MediaData.SizeBytes,
             mediaAsset.MediaData.FileName.Name,
             mediaAsset.MediaData.ContentType.Value);
     }

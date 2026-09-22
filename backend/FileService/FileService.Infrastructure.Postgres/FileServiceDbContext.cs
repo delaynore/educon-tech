@@ -1,4 +1,5 @@
 using FileService.Domain;
+using FileService.Infrastructure.Postgres.Configurations;
 using FileService.UseCases.Database;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +18,7 @@ public class FileServiceDbContext : DbContext, IFileReadDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new MediaAssetConfiguration());
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(FileServiceDbContext).Assembly);
     }
 }

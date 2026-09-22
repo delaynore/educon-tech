@@ -58,7 +58,7 @@ public sealed class StartMultipartUploadHandler
             return contentTypeResult.Error;
         }
 
-        var chunkCalculationResult = _chunkSizeCalculator.Calculate(request.Size);
+        var chunkCalculationResult = _chunkSizeCalculator.Calculate(request.SizeBytes);
         if (chunkCalculationResult.IsFailure)
         {
             return chunkCalculationResult.Error;
@@ -67,7 +67,7 @@ public sealed class StartMultipartUploadHandler
         var mediaDataResult = MediaData.Create(
             fileNameResult.Value,
             contentTypeResult.Value,
-            request.Size,
+            request.SizeBytes,
             chunkCalculationResult.Value.TotalChunks);
 
         if (mediaDataResult.IsFailure)
