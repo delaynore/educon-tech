@@ -1,9 +1,9 @@
 using System.Net.Http.Json;
 using Amazon.S3;
+using FileService.Contracts;
 using FileService.Contracts.Dto;
 using FileService.Domain;
 using FileService.IntegrationTests.Infrastructure;
-using FileService.UseCases.HttpCommunication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using CompleteMultipartUploadRequest = FileService.Contracts.Dto.CompleteMultipartUploadRequest;

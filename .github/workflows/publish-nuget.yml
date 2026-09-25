@@ -23,13 +23,33 @@ jobs:
           dotnet-version: '10.x'
 
       - name: Restore
-        run: dotnet restore backend/Shared/Shared.sln
+        run: dotnet restore
 
       - name: Pack packages
+        shell: bash
         run: |
+          set -euo pipefail
+
           mkdir -p ./packages
 
-          find backend/Shared -name "*.csproj" -print0 | while IFS= read -r -d '' project; do
+          find . -name "*.csproj" -not -path "*/bin/*" -not -path "*/obj/*" -print0 |
+          while IFS= read -r -d '' project; do
+            echo "Checking $project"
+
+            is_packable=$(
+              dotnet msbuild "$project" \
+                -getProperty:IsPackable \
+                -p:Configuration=Release |
+              grep -o '"IsPackable":[^,}]*' |
+              cut -d: -f2 |
+              tr -d '"[:space:]'
+            )
+
+            if [[ "${is_packable,,}" != "true" ]]; then
+              echo "Skipping $project (IsPackable=$is_packable)"
+              continue
+            fi
+
             echo "Packing $project"
 
             dotnet pack "$project" \
@@ -39,8 +59,20 @@ jobs:
           done
 
       - name: Publish packages
+        shell: bash
         run: |
-          for package in ./packages/*.nupkg; do
+          set -euo pipefail
+
+          shopt -s nullglob
+
+          packages=(./packages/*.nupkg)
+
+          if [ ${#packages[@]} -eq 0 ]; then
+            echo "No NuGet packages found."
+            exit 0
+          fi
+
+          for package in "${packages[@]}"; do
             echo "Publishing $package"
 
             dotnet nuget push "$package" \

@@ -82,12 +82,15 @@ public sealed class GetHandler
                 l.Id,
                 l.Title.Value,
                 l.Description.Value,
+
                 l.CreatedAtUtc,
                 l.UpdatedAtUtc))
             .Skip(request.PageSize * (request.Page - 1))
             .Take(request.PageSize)
             .OrderByDescending(x => x.CreatedAtUtc)
             .ToListAsync(cancellationToken);
+
+        
 
         return new PaginatedLessonsDto(lessons, count);
     }
