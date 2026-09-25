@@ -22,40 +22,59 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Restore
-        run: dotnet restore
-
-      - name: Pack packages
+      - name: Restore and pack packages
         shell: bash
         run: |
           set -euo pipefail
 
+          PROJECT_DIRS=(
+            "backend/Shared"
+            "backend/FileService"
+          )
+
           mkdir -p ./packages
 
-          find . -name "*.csproj" -not -path "*/bin/*" -not -path "*/obj/*" -print0 |
-          while IFS= read -r -d '' project; do
-            echo "Checking $project"
-
-            is_packable=$(
-              dotnet msbuild "$project" \
-                -getProperty:IsPackable \
-                -p:Configuration=Release |
-              grep -o '"IsPackable":[^,}]*' |
-              cut -d: -f2 |
-              tr -d '"[:space:]'
-            )
-
-            if [[ "${is_packable,,}" != "true" ]]; then
-              echo "Skipping $project (IsPackable=$is_packable)"
+          for dir in "${PROJECT_DIRS[@]}"; do
+            if [ ! -d "$dir" ]; then
+              echo "Directory does not exist: $dir"
               continue
             fi
 
-            echo "Packing $project"
+            while IFS= read -r -d '' project; do
+              echo ""
+              echo "Checking: $project"
 
-            dotnet pack "$project" \
-              --configuration Release \
-              --no-restore \
-              --output ./packages
+              is_packable=$(
+                dotnet msbuild "$project" \
+                  -getProperty:IsPackable \
+                  -p:Configuration=Release |
+                grep -o '"IsPackable":[^,}]*' |
+                cut -d: -f2 |
+                tr -d '"[:space:]' || true
+              )
+
+              if [[ "${is_packable,,}" != "true" ]]; then
+                echo "Skipping $project (IsPackable=$is_packable)"
+                continue
+              fi
+
+              echo "Restoring $project"
+              dotnet restore "$project"
+
+              echo "Packing $project"
+              dotnet pack "$project" \
+                --configuration Release \
+                --no-restore \
+                --output ./packages
+
+            done < <(
+              find "$dir" \
+                -type f \
+                -name "*.csproj" \
+                -not -path "*/bin/*" \
+                -not -path "*/obj/*" \
+                -print0
+            )
           done
 
       - name: Publish packages
