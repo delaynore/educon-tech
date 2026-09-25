@@ -30,6 +30,13 @@ jobs:
         with:
           dotnet-version: '10.x'
 
+      - name : Update nuget source
+        run: |
+          dotnet nuget update source github \
+            --username "${{ github.repository_owner }}" \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --store-password-in-clear-text
+
       - name: Restore projects
         run: |
           set -euo pipefail
@@ -69,7 +76,16 @@ jobs:
         
       - name: Publish packages
         run: |
-          for package in ./packages/*.nupkg; do
+          set -euo pipefail
+          shopt -s nullglob
+          packages=(./packages/*.nupkg)
+
+          if [ ${#packages[@]} -eq 0 ]; then
+            echo "No packages to publish"
+            exit 0
+          fi
+
+          for package in "${packages[@]}"; do
             echo "Publishing $package"
 
             dotnet nuget push "$package" \
