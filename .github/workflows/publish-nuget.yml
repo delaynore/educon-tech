@@ -39,16 +39,6 @@ jobs:
             --password "${{ secrets.GITHUB_TOKEN }}" \
             --store-password-in-clear-text
 
-      - name: Restore projects
-        run: |
-          set -euo pipefail
-
-          while IFS= read -r project; do
-            [ -z "$project" ] && continue
-            echo "Restoring $project"
-            dotnet restore "$project"
-          done <<< "$PROJECTS"
-
       - name: Pack packages
         run: |
           set -euo pipefail
@@ -57,23 +47,20 @@ jobs:
           while IFS= read -r project; do
             [ -z "$project" ] && continue
 
-            if [ ! -f "$project" ]; then
+            echo "========================================"
+            echo "Packing: $project"
+            echo "========================================"
+
+            test -f "$project" || {
               echo "::error::Project file not found: $project"
               exit 1
-            fi
+            }
 
-            packable=$(dotnet msbuild "$project" -getProperty:IsPackable --no-restore)
-
-            if [ "$packable" != "true" ]; then
-              echo "::error::$project is not IsPackable (IsPackable=$packable), refusing to pack it"
-              exit 1
-            fi
-
-            echo "Packing $project"
             dotnet pack "$project" \
               --configuration Release \
-              --no-restore \
-              --output ./packages
+              --output ./packages \
+              --verbosity normal
+
           done <<< "$PROJECTS"
         
       - name: Publish packages
