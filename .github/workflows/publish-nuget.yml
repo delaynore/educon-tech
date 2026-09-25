@@ -9,6 +9,14 @@ permissions:
   contents: read
   packages: write
 
+env:
+  # Список проектов для publish
+  PROJECTS: |
+    backend/Shared/Core/Core.csproj
+    backend/Shared/Framework/Framework.csproj
+    backend/Shared/SharedKernel/SharedKernel.csproj
+    backend/FileService/FileService.Contracts/FileService.Contracts.csproj
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -22,99 +30,46 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Create MSBuild helper
-        shell: bash
-        run: |
-          cat > "$RUNNER_TEMP/CheckPackable.targets" <<'EOF'
-          <Project>
-            <Target Name="CheckPackable">
-              <Message Text="PACKABLE_VALUE=$(IsPackable)" Importance="High" />
-            </Target>
-          </Project>
-          EOF
-
-      - name: Restore and pack packages
-        shell: bash
+      - name: Restore projects
         run: |
           set -euo pipefail
 
-          PROJECT_DIRS=(
-            "backend/Shared"
-            "backend/FileService"
-          )
+          while IFS= read -r project; do
+            [ -z "$project" ] && continue
+            echo "Restoring $project"
+            dotnet restore "$project"
+          done <<< "$PROJECTS"
 
+      - name: Pack packages
+        run: |
+          set -euo pipefail
           mkdir -p ./packages
 
-          for dir in "${PROJECT_DIRS[@]}"; do
-            if [ ! -d "$dir" ]; then
-              echo "Directory does not exist: $dir"
-              continue
+          while IFS= read -r project; do
+            [ -z "$project" ] && continue
+
+            if [ ! -f "$project" ]; then
+              echo "::error::Project file not found: $project"
+              exit 1
             fi
 
-            while IFS= read -r -d '' project; do
-              echo ""
-              echo "========================================"
-              echo "Checking: $project"
-              echo "========================================"
+            packable=$(dotnet msbuild "$project" -getProperty:IsPackable --no-restore)
 
-              output=$(
-                dotnet msbuild "$project" \
-                  -p:Configuration=Release \
-                  -p:CustomAfterMicrosoftCommonTargets="$RUNNER_TEMP/CheckPackable.targets" \
-                  -target:CheckPackable \
-                  -nologo
-              )
+            if [ "$packable" != "true" ]; then
+              echo "::error::$project is not IsPackable (IsPackable=$packable), refusing to pack it"
+              exit 1
+            fi
 
-              is_packable=$(
-                echo "$output" |
-                grep "PACKABLE_VALUE=" |
-                tail -n 1 |
-                sed 's/.*PACKABLE_VALUE=//' |
-                tr -d '\r' |
-                xargs
-              )
-
-              echo "IsPackable=$is_packable"
-
-              if [[ "${is_packable,,}" != "true" ]]; then
-                echo "Skipping $project"
-                continue
-              fi
-
-              echo "Restoring $project"
-              dotnet restore "$project"
-
-              echo "Packing $project"
-              dotnet pack "$project" \
-                --configuration Release \
-                --no-restore \
-                --output ./packages
-
-            done < <(
-              find "$dir" \
-                -type f \
-                -name "*.csproj" \
-                -not -path "*/bin/*" \
-                -not -path "*/obj/*" \
-                -print0
-            )
-          done
-
+            echo "Packing $project"
+            dotnet pack "$project" \
+              --configuration Release \
+              --no-restore \
+              --output ./packages
+          done <<< "$PROJECTS"
+        
       - name: Publish packages
-        shell: bash
         run: |
-          set -euo pipefail
-
-          shopt -s nullglob
-
-          packages=(./packages/*.nupkg)
-
-          if [ ${#packages[@]} -eq 0 ]; then
-            echo "No NuGet packages found."
-            exit 0
-          fi
-
-          for package in "${packages[@]}"; do
+          for package in ./packages/*.nupkg; do
             echo "Publishing $package"
 
             dotnet nuget push "$package" \
