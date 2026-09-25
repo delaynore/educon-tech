@@ -38,7 +38,7 @@ public sealed class MultipartUploadFileTests : FileServiceTestsBase
 
         var startResponse = await StartMultipartUpload(fileInfo, cancellationToken);
 
-        await ExecuteInDbContext(cancellationToken, async (dbContext, ct) =>
+        await ExecuteInDbContext(cancellationToken, async (dbContext, _, ct) =>
         {
             var mediaAsset = await dbContext.MediaAssetsQuery
                 .FirstOrDefaultAsync(x => x.Id == startResponse.MediaAssetId, ct);
@@ -53,7 +53,7 @@ public sealed class MultipartUploadFileTests : FileServiceTestsBase
 
         _ = await CompleteMultipartUpload(startResponse, parts, cancellationToken);
 
-        await ExecuteInDbContext(cancellationToken, async (dbContext, ct) =>
+        await ExecuteInDbContext(cancellationToken, async (dbContext, services, ct) =>
         {
             var mediaAsset = await dbContext.MediaAssetsQuery
                 .FirstOrDefaultAsync(x => x.Id == startResponse.MediaAssetId, ct);
@@ -61,7 +61,7 @@ public sealed class MultipartUploadFileTests : FileServiceTestsBase
             Assert.NotNull(mediaAsset);
             Assert.Equal(MediaStatus.Uploaded, mediaAsset.Status);
 
-            var amazonS3Client = _webFactory.Services.GetRequiredService<IAmazonS3>();
+            var amazonS3Client = services.GetRequiredService<IAmazonS3>();
             var @object = await amazonS3Client.GetObjectAsync(
                 mediaAsset.Key.Location,
                 mediaAsset.Key.Value,

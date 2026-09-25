@@ -20,14 +20,14 @@ public abstract class FileServiceTestsBase : IClassFixture<IntegrationTestsWebFa
 
     protected async Task ExecuteInDbContext(
         CancellationToken cancellationToken,
-        params Func<FileServiceDbContext, CancellationToken, Task>[] actions)
+        params Func<FileServiceDbContext, IServiceProvider, CancellationToken, Task>[] actions)
     {
         await using var serviceScope = Services.CreateAsyncScope();
         var dbContext = serviceScope.ServiceProvider.GetRequiredService<FileServiceDbContext>();
 
         foreach (var action in actions)
         {
-            await action(dbContext, cancellationToken);
+            await action(dbContext, serviceScope.ServiceProvider, cancellationToken);
         }
     }
 }
