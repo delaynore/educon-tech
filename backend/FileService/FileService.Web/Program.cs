@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using FileService.Web.Extensions;
 using Microsoft.AspNetCore.Http.Json;
@@ -22,6 +21,9 @@ app.Configure();
 
 app.Run();
 
-public partial class Program
+namespace FileService.Web
 {
+    public partial class Program
+    {
+    }
 }

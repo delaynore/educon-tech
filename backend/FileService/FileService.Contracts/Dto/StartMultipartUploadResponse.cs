@@ -1,4 +1,4 @@
-namespace FileService.Contracts;
+namespace FileService.Contracts.Dto;
 
 public sealed record StartMultipartUploadResponse(
     Guid MediaAssetId,

@@ -6,6 +6,7 @@ using DotNet.Testcontainers.Images;
 using FileService.Infrastructure.Postgres;
 using FileService.Infrastructure.S3;
 using FileService.UseCases.FilesStorage;
+using FileService.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;

@@ -8,7 +8,6 @@
     <Folder Name="/tests/">
         <Project Path="tests/FileService.IntegrationTests/FileService.IntegrationTests.csproj" />
     </Folder>
-    <Project Path="FileService.Communication/FileService.Communication.csproj" />
     <Project Path="FileService.Contracts/FileService.Contracts.csproj" />
     <Project Path="FileService.Domain\FileService.Domain.csproj" />
     <Project Path="FileService.Infrastructure.Postgres\FileService.Infrastructure.Postgres.csproj" />

@@ -1,20 +1,13 @@
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Amazon.S3;
-using Amazon.S3.Model;
-using CSharpFunctionalExtensions;
-using Docker.DotNet.Models;
-using FileService.Contracts;
+using FileService.Contracts.Dto;
 using FileService.Domain;
-using FileService.Infrastructure.Postgres;
 using FileService.IntegrationTests.Infrastructure;
 using FileService.UseCases.HttpCommunication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SharedKernel;
-using CompleteMultipartUploadRequest = FileService.Contracts.CompleteMultipartUploadRequest;
-using CompleteMultipartUploadResponse = FileService.Contracts.CompleteMultipartUploadResponse;
+using CompleteMultipartUploadRequest = FileService.Contracts.Dto.CompleteMultipartUploadRequest;
+using CompleteMultipartUploadResponse = FileService.Contracts.Dto.CompleteMultipartUploadResponse;
 
 namespace FileService.IntegrationTests.Features;
 

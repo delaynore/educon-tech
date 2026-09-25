@@ -1,6 +1,5 @@
-using Core.Validation;
 using CSharpFunctionalExtensions;
-using FileService.Contracts;
+using FileService.Contracts.Dto;
 using FileService.Domain;
 using FileService.UseCases.FilesStorage;
 using Framework.Endpoints;
