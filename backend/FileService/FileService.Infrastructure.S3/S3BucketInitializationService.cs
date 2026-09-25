@@ -1,6 +1,7 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Util;
+using FileService.UseCases.FilesStorage;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -10,11 +11,11 @@ namespace FileService.Infrastructure.S3;
 public sealed class S3BucketInitializationService : BackgroundService
 {
     private readonly ILogger<S3BucketInitializationService> _logger;
-    private readonly S3Options _options;
+    private readonly FileStorageOptions _options;
     private readonly IAmazonS3 _s3Client;
 
     public S3BucketInitializationService(
-        IOptions<S3Options> s3Options,
+        IOptions<FileStorageOptions> s3Options,
         IAmazonS3 s3Client,
         ILogger<S3BucketInitializationService> logger)
     {

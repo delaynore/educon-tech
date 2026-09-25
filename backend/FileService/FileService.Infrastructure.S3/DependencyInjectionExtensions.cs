@@ -12,11 +12,11 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddS3(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<S3Options>(configuration.GetSection(S3Options.SectionName));
+        services.Configure<FileStorageOptions>(configuration.GetSection(FileStorageOptions.SectionName));
 
         services.AddSingleton<IAmazonS3>(sp =>
         {
-            var options = sp.GetRequiredService<IOptions<S3Options>>().Value;
+            var options = sp.GetRequiredService<IOptions<FileStorageOptions>>().Value;
 
             var config = new AmazonS3Config
             {

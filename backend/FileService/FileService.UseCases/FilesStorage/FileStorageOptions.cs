@@ -1,8 +1,8 @@
-namespace FileService.Infrastructure.S3;
+namespace FileService.UseCases.FilesStorage;
 
-public sealed class S3Options
+public sealed class FileStorageOptions
 {
-    public const string SectionName = "S3Options";
+    public const string SectionName = "FileStorageOptions";
 
     public string Endpoint { get; init; }
 

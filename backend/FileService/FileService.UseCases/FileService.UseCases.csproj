@@ -3,6 +3,8 @@
     <PackageReference Include="Dlyn.Core"/>
     <PackageReference Include="Dlyn.Framework"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+    <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FileService.Contracts\FileService.Contracts.csproj"/>

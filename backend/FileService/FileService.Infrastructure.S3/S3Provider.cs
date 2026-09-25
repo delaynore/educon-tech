@@ -16,18 +16,18 @@ public sealed class S3Provider : IDisposable, IS3Provider
 {
     private readonly IAmazonS3 _s3Client;
     private readonly ILogger<S3Provider> _logger;
-    private readonly S3Options _s3Options;
+    private readonly FileStorageOptions _fileStorageOptions;
 
     private readonly SemaphoreSlim _maxConcurrentRequestsSemaphore;
 
     public S3Provider(
         IAmazonS3 s3Client,
-        IOptions<S3Options> options,
+        IOptions<FileStorageOptions> options,
         ILogger<S3Provider> logger)
     {
         _s3Client = s3Client;
         _logger = logger;
-        _s3Options = options.Value;
+        _fileStorageOptions = options.Value;
         _maxConcurrentRequestsSemaphore = new SemaphoreSlim(options.Value.MaxConcurrentRequests);
     }
 
@@ -78,8 +78,8 @@ public sealed class S3Provider : IDisposable, IS3Provider
                             Verb = HttpVerb.PUT,
                             UploadId = uploadId,
                             PartNumber = partNumber,
-                            Expires = DateTime.UtcNow.AddHours(_s3Options.UploadUrlExpirationHours),
-                            Protocol = _s3Options.WithSsl ? Protocol.HTTPS : Protocol.HTTP,
+                            Expires = DateTime.UtcNow.AddHours(_fileStorageOptions.UploadUrlExpirationHours),
+                            Protocol = _fileStorageOptions.WithSsl ? Protocol.HTTPS : Protocol.HTTP,
                         };
 
                         var url = await _s3Client.GetPreSignedURLAsync(request);
@@ -139,8 +139,8 @@ public sealed class S3Provider : IDisposable, IS3Provider
                 BucketName = storageKey.Location,
                 Key = storageKey.Value,
                 Verb = HttpVerb.GET,
-                Expires = DateTime.UtcNow.AddHours(_s3Options.DownloadUrlExpirationHours),
-                Protocol = _s3Options.WithSsl ? Protocol.HTTPS : Protocol.HTTP,
+                Expires = DateTime.UtcNow.AddHours(_fileStorageOptions.DownloadUrlExpirationHours),
+                Protocol = _fileStorageOptions.WithSsl ? Protocol.HTTPS : Protocol.HTTP,
             };
 
             // todo: try catch for null string (file does not exist)
@@ -169,8 +169,8 @@ public sealed class S3Provider : IDisposable, IS3Provider
                             BucketName = storageKey.Location,
                             Key = storageKey.Value,
                             Verb = HttpVerb.GET,
-                            Expires = DateTime.UtcNow.AddHours(_s3Options.DownloadUrlExpirationHours),
-                            Protocol = _s3Options.WithSsl ? Protocol.HTTPS : Protocol.HTTP,
+                            Expires = DateTime.UtcNow.AddHours(_fileStorageOptions.DownloadUrlExpirationHours),
+                            Protocol = _fileStorageOptions.WithSsl ? Protocol.HTTPS : Protocol.HTTP,
                         };
 
                         // todo: try catch for null string (file does not exist)
