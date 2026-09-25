@@ -22,6 +22,17 @@ jobs:
         with:
           dotnet-version: '10.x'
 
+      - name: Create MSBuild helper
+        shell: bash
+        run: |
+          cat > "$RUNNER_TEMP/CheckPackable.targets" <<'EOF'
+          <Project>
+            <Target Name="CheckPackable">
+              <Message Text="PACKABLE_VALUE=$(IsPackable)" Importance="High" />
+            </Target>
+          </Project>
+          EOF
+
       - name: Restore and pack packages
         shell: bash
         run: |
@@ -42,19 +53,31 @@ jobs:
 
             while IFS= read -r -d '' project; do
               echo ""
+              echo "========================================"
               echo "Checking: $project"
+              echo "========================================"
 
-              is_packable=$(
+              output=$(
                 dotnet msbuild "$project" \
-                  -getProperty:IsPackable \
-                  -p:Configuration=Release |
-                grep -o '"IsPackable":[^,}]*' |
-                cut -d: -f2 |
-                tr -d '"[:space:]' || true
+                  -p:Configuration=Release \
+                  -p:CustomAfterMicrosoftCommonTargets="$RUNNER_TEMP/CheckPackable.targets" \
+                  -target:CheckPackable \
+                  -nologo
               )
 
+              is_packable=$(
+                echo "$output" |
+                grep "PACKABLE_VALUE=" |
+                tail -n 1 |
+                sed 's/.*PACKABLE_VALUE=//' |
+                tr -d '\r' |
+                xargs
+              )
+
+              echo "IsPackable=$is_packable"
+
               if [[ "${is_packable,,}" != "true" ]]; then
-                echo "Skipping $project (IsPackable=$is_packable)"
+                echo "Skipping $project"
                 continue
               fi
 
