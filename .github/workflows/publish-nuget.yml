@@ -48,7 +48,7 @@ jobs:
             [ -z "$project" ] && continue
 
             echo "========================================"
-            echo "Packing: $project"
+            echo "Preparation: $project"
             echo "========================================"
 
             test -f "$project" || {
@@ -56,9 +56,20 @@ jobs:
               exit 1
             }
 
+            echo "========================================"
+            echo "Restore: $project"
+            echo "========================================"
+
+            dotnet restore "$project"
+
+            echo "========================================"
+            echo "Packing: $project"
+            echo "========================================"
+
             dotnet pack "$project" \
               --configuration Release \
               --output ./packages \
+              --no-restore \
               --verbosity normal
 
           done <<< "$PROJECTS"
@@ -80,5 +91,6 @@ jobs:
             dotnet nuget push "$package" \
               --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
               --api-key "${{ secrets.GITHUB_TOKEN }}" \
+              --no-restore \
               --skip-duplicate
           done
