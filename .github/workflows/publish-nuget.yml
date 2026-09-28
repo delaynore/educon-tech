@@ -62,8 +62,7 @@ jobs:
             dotnet pack "$project" \
               --configuration Release \
               --output ./packages \
-              --no-restore \
-              --verbosity normal
+              --no-restore
           done
 
       - name: Publish packages
