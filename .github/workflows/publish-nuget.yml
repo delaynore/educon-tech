@@ -9,14 +9,6 @@ permissions:
   contents: read
   packages: write
 
-env:
-  # Список проектов для publish
-  PROJECTS: |
-    backend/Shared/Core/Core.csproj
-    backend/Shared/Framework/Framework.csproj
-    backend/Shared/SharedKernel/SharedKernel.csproj
-    backend/FileService/FileService.Contracts/FileService.Contracts.csproj
-
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -39,48 +31,50 @@ jobs:
             --password "${{ secrets.GITHUB_TOKEN }}" \
             --store-password-in-clear-text
 
-      - name: Pack packages
+      - name: Restore and Pack packages
+        shell: bash
         run: |
           set -euo pipefail
+
           mkdir -p ./packages
 
-          while IFS= read -r project; do
-            [ -z "$project" ] && continue
+          projects=(
+            "backend/Shared/Core/Core.csproj"
+            "backend/Shared/Framework/Framework.csproj"
+            "backend/Shared/SharedKernel/SharedKernel.csproj"
+            "backend/FileService/FileService.Contracts/FileService.Contracts.csproj"
+          )
 
+          for project in "${projects[@]}"; do
             echo "========================================"
             echo "Preparation: $project"
             echo "========================================"
 
-            test -f "$project" || {
+            if [[ ! -f "$project" ]]; then
               echo "::error::Project file not found: $project"
               exit 1
-            }
+            fi
 
-            echo "========================================"
             echo "Restore: $project"
-            echo "========================================"
-
             dotnet restore "$project"
 
-            echo "========================================"
             echo "Packing: $project"
-            echo "========================================"
-
             dotnet pack "$project" \
               --configuration Release \
               --output ./packages \
               --no-restore \
               --verbosity normal
+          done
 
-          done <<< "$PROJECTS"
-        
       - name: Publish packages
+        shell: bash
         run: |
           set -euo pipefail
           shopt -s nullglob
+
           packages=(./packages/*.nupkg)
 
-          if [ ${#packages[@]} -eq 0 ]; then
+          if (( ${#packages[@]} == 0 )); then
             echo "No packages to publish"
             exit 0
           fi
@@ -91,6 +85,5 @@ jobs:
             dotnet nuget push "$package" \
               --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" \
               --api-key "${{ secrets.GITHUB_TOKEN }}" \
-              --no-restore \
               --skip-duplicate
           done
