@@ -15,7 +15,7 @@ using SharedKernel;
 
 namespace EducationContentService.UseCases.Features.Lessons;
 
-public sealed class GetLessonRequestValidator : AbstractValidator<GetLessonRequest>
+public sealed class GetLessonRequestValidator : AbstractValidator<GetLessonsRequest>
 {
     public GetLessonRequestValidator()
     {
@@ -40,7 +40,7 @@ public sealed class GetEndpoint : IEndpoint
         builder.MapGet(
             "/lessons",
             async Task<EndpointResult<PaginatedLessonsDto>>(
-                [AsParameters] GetLessonRequest request,
+                [AsParameters] GetLessonsRequest request,
                 [FromServices] GetHandler handler,
                 CancellationToken cancellationToken) => await handler.Handle(request, cancellationToken));
     }
@@ -49,12 +49,12 @@ public sealed class GetEndpoint : IEndpoint
 public sealed class GetHandler
 {
     private readonly IEducationReadDbContext _readDbContext;
-    private readonly IValidator<GetLessonRequest> _validator;
+    private readonly IValidator<GetLessonsRequest> _validator;
     private readonly IFileServiceHttpClient _fileServiceHttpClient;
 
     public GetHandler(
         IEducationReadDbContext readDbContext,
-        IValidator<GetLessonRequest> validator,
+        IValidator<GetLessonsRequest> validator,
         IFileServiceHttpClient fileServiceHttpClient)
     {
         _readDbContext = readDbContext;
@@ -63,7 +63,7 @@ public sealed class GetHandler
     }
 
     public async Task<Result<PaginatedLessonsDto, Error>> Handle(
-        GetLessonRequest request,
+        GetLessonsRequest request,
         CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
@@ -83,6 +83,7 @@ public sealed class GetHandler
         var count = await query.CountAsync(cancellationToken);
 
         var lessons = await query
+            .OrderByDescending(x => x.CreatedAtUtc)
             .Select(l => new LessonDto(
                 l.Id,
                 l.Title.Value,
@@ -90,7 +91,6 @@ public sealed class GetHandler
                 l.VideoId.HasValue ? new MediaDto(l.VideoId.Value, string.Empty, string.Empty) : null,
                 l.CreatedAtUtc,
                 l.UpdatedAtUtc))
-            .OrderByDescending(x => x.CreatedAtUtc)
             .Skip(request.PageSize * (request.Page - 1))
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
@@ -116,7 +116,7 @@ public sealed class GetHandler
         foreach (var lesson in lessons)
         {
             if (lesson.Media is not null
-                && mediaAssetDict.TryGetValue(lesson.Id, out var mediaAssetDto))
+                && mediaAssetDict.TryGetValue(lesson.Media.Id, out var mediaAssetDto))
             {
                 lesson.Media = new MediaDto(
                     mediaAssetDto.MediaAssetId,

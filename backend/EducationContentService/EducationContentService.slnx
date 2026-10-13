@@ -7,9 +7,12 @@
     <File Path="Dockerfile" />
     <File Path=".dockerignore" />
   </Folder>
-  <Project Path="EducationContentService.Contracts\EducationContentService.Contracts.csproj" Type="Classic C#" />
-  <Project Path="EducationContentService.Domain\EducationContentService.Domain.csproj" Type="Classic C#" />
-  <Project Path="EducationContentService.Infrastructure.Postgres\EducationContentService.Infrastructure.Postgres.csproj" Type="Classic C#" />
-  <Project Path="EducationContentService.UseCases\EducationContentService.UseCases.csproj" Type="Classic C#" />
+  <Folder Name="/tests/">
+    <Project Path="tests/EducationContentService.IntegrationTests/EducationContentService.IntegrationTests.csproj" />
+  </Folder>
+  <Project Path="EducationContentService.Contracts\EducationContentService.Contracts.csproj" Type="C#" />
+  <Project Path="EducationContentService.Domain\EducationContentService.Domain.csproj" Type="C#" />
+  <Project Path="EducationContentService.Infrastructure.Postgres\EducationContentService.Infrastructure.Postgres.csproj" Type="C#" />
+  <Project Path="EducationContentService.UseCases\EducationContentService.UseCases.csproj" Type="C#" />
   <Project Path="EducationContentService.Web/EducationContentService.Web.csproj" />
 </Solution>

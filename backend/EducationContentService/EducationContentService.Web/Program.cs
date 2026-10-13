@@ -20,3 +20,10 @@ var app = builder.Build();
 app.Configure();
 
 app.Run();
+
+namespace EducationContentService.Web
+{
+    public partial class Program
+    {
+    }
+}
