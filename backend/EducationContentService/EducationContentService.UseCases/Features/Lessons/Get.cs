@@ -2,6 +2,8 @@ using Core.Validation;
 using CSharpFunctionalExtensions;
 using EducationContentService.Contracts.Lessons;
 using EducationContentService.UseCases.Database;
+using FileService.Contracts;
+using FileService.Contracts.Dto;
 using FluentValidation;
 using Framework.Endpoints;
 using Microsoft.AspNetCore.Builder;
@@ -48,13 +50,16 @@ public sealed class GetHandler
 {
     private readonly IEducationReadDbContext _readDbContext;
     private readonly IValidator<GetLessonRequest> _validator;
+    private readonly IFileServiceHttpClient _fileServiceHttpClient;
 
     public GetHandler(
         IEducationReadDbContext readDbContext,
-        IValidator<GetLessonRequest> validator)
+        IValidator<GetLessonRequest> validator,
+        IFileServiceHttpClient fileServiceHttpClient)
     {
         _readDbContext = readDbContext;
         _validator = validator;
+        _fileServiceHttpClient = fileServiceHttpClient;
     }
 
     public async Task<Result<PaginatedLessonsDto, Error>> Handle(
@@ -82,15 +87,43 @@ public sealed class GetHandler
                 l.Id,
                 l.Title.Value,
                 l.Description.Value,
-
+                l.VideoId.HasValue ? new MediaDto(l.VideoId.Value, string.Empty, string.Empty) : null,
                 l.CreatedAtUtc,
                 l.UpdatedAtUtc))
+            .OrderByDescending(x => x.CreatedAtUtc)
             .Skip(request.PageSize * (request.Page - 1))
             .Take(request.PageSize)
-            .OrderByDescending(x => x.CreatedAtUtc)
             .ToListAsync(cancellationToken);
 
-        
+        var ids = lessons
+            .Where(x => x.Media is not null)
+            .Select(x => x.Media!.Id)
+            .ToList()
+            .AsReadOnly();
+
+        var getMediaAssetsRequest = new GetMediaAssetsRequest(ids);
+        var mediaAssets = await _fileServiceHttpClient
+            .GetMediaAssets(getMediaAssetsRequest, cancellationToken);
+
+        if (mediaAssets.IsFailure)
+        {
+            return mediaAssets.Error;
+        }
+
+        var mediaAssetDict = mediaAssets.Value.MediaAssets
+            .ToDictionary(x => x.MediaAssetId, x => x);
+
+        foreach (var lesson in lessons)
+        {
+            if (lesson.Media is not null
+                && mediaAssetDict.TryGetValue(lesson.Id, out var mediaAssetDto))
+            {
+                lesson.Media = new MediaDto(
+                    mediaAssetDto.MediaAssetId,
+                    mediaAssetDto.Url,
+                    mediaAssetDto.Status);
+            }
+        }
 
         return new PaginatedLessonsDto(lessons, count);
     }

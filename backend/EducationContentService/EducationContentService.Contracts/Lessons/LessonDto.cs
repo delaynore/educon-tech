@@ -6,4 +6,7 @@ public sealed record LessonDto(
     string Description,
     MediaDto? Media,
     DateTime CreatedAtUtc,
-    DateTime UpdatedAtUtc);
+    DateTime UpdatedAtUtc)
+{
+    public MediaDto? Media { get; set; } = Media;
+}

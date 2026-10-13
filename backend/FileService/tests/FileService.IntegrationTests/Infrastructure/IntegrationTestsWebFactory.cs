@@ -1,21 +1,12 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using Amazon.S3;
-using CSharpFunctionalExtensions.Json.Serialization;
-using DotNet.Testcontainers.Images;
 using FileService.Infrastructure.Postgres;
-using FileService.Infrastructure.S3;
-using FileService.UseCases.FilesStorage;
-using FileService.Web;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
 using Testcontainers.Minio;
 using Testcontainers.PostgreSql;
 
@@ -68,9 +59,9 @@ public sealed class IntegrationTestsWebFactory : WebApplicationFactory<Program>,
                 optional: false);
             config.AddInMemoryCollection([
                 KeyValuePair.Create<string, string?>("ConnectionStrings:Database", _dbContainer.GetConnectionString()),
-                KeyValuePair.Create<string, string?>("S3Options:Endpoint", _s3Container.GetConnectionString()),
-                KeyValuePair.Create<string, string?>("S3Options:AccessKey", _s3Container.GetAccessKey()),
-                KeyValuePair.Create<string, string?>("S3Options:SecretKey", _s3Container.GetSecretKey()),
+                KeyValuePair.Create<string, string?>("FileStorageOptions:Endpoint", _s3Container.GetConnectionString()),
+                KeyValuePair.Create<string, string?>("FileStorageOptions:AccessKey", _s3Container.GetAccessKey()),
+                KeyValuePair.Create<string, string?>("FileStorageOptions:SecretKey", _s3Container.GetSecretKey()),
             ]);
         });
 

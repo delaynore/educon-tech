@@ -13,7 +13,7 @@ public static class DependencyInjectionExtensions
         IConfiguration configuration)
     {
         return services
-            .AddUseCases()
+            .AddUseCases(configuration)
             .AddInfrastructurePostgres(configuration)
             .AddSerilogLogging(configuration, "Education Content Service")
             .AddOpenApiSpec("EducationContentService", " v1")
