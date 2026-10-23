@@ -1,4 +1,4 @@
-root = true
+﻿root = true
 
 # All files
 [*]
@@ -28,6 +28,7 @@ insert_final_newline = true
 
 dotnet_diagnostic.CA1873.severity = none
 dotnet_diagnostic.SA0001.severity = none
+dotnet_diagnostic.SA1601.severity = none
 dotnet_diagnostic.SA1512.severity = none
 dotnet_diagnostic.SA1200.severity = none
 dotnet_diagnostic.SA1600.severity = none
