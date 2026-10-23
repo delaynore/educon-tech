@@ -2,5 +2,5 @@ namespace EducationContentService.Contracts.Lessons;
 
 public sealed record MediaDto(
     Guid Id,
-    string Url,
+    string? Url,
     string Status);

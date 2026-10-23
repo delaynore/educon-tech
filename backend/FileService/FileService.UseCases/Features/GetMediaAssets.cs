@@ -1,5 +1,4 @@
 using CSharpFunctionalExtensions;
-using FileService.Contracts;
 using FileService.Contracts.Dto;
 using FileService.Domain;
 using FileService.UseCases.Database;
@@ -11,6 +10,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SharedKernel;
 
 namespace FileService.UseCases.Features;
@@ -39,13 +39,13 @@ public sealed record GetMediaAssetsHandler
         IFileReadDbContext context,
         IS3Provider fileStorageProvider,
         HybridCache hybridCache,
-        FileStorageOptions fileStorageOptions)
+        IOptions<FileStorageOptions> fileStorageOptions)
     {
         _logger = logger;
         _context = context;
         _fileStorageProvider = fileStorageProvider;
         _hybridCache = hybridCache;
-        _fileStorageOptions = fileStorageOptions;
+        _fileStorageOptions = fileStorageOptions.Value;
     }
 
     public async Task<Result<GetMediaAssetsResponse, Error>> Handle(

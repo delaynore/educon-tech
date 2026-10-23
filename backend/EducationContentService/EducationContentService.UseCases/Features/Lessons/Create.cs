@@ -62,15 +62,16 @@ public sealed class CreateHandler
         }
 
         _logger.LogInformation(
-            "CreateLessonRequest: {Title}, {Description}",
+            "CreateLessonRequest: {Title}, {Description}, {VideoId}",
             createLessonRequest.Title,
-            createLessonRequest.Description);
+            createLessonRequest.Description,
+            createLessonRequest.VideoId);
 
         var title = Title.Create(createLessonRequest.Title).Value;
 
         var description = Description.Create(createLessonRequest.Description).Value;
 
-        var lesson = new Lesson(Guid.NewGuid(), title, description);
+        var lesson = new Lesson(Guid.NewGuid(), title, description, createLessonRequest.VideoId);
 
         var (_, isFailure, _, error) = await _lessonsRepository.AddAsync(lesson, cancellationToken);
         if (isFailure)
